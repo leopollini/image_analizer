@@ -2,6 +2,7 @@
 #include <unistd.h>
 #define cimg_display 0
 #include "../../libs/CImg.h"
+#include "../../libs/utils.h"
 
 using namespace std;
 using namespace cimg_library;
@@ -13,14 +14,7 @@ int main(int argn, char *argv[], char *envp[])
 
 	if (argn < 3)
 		return (cerr << "\033[91mFailed: not enough args.\n", 0);
-	try
-	{
-		twf = (float)255 * stof(argv++[1]) / 100 - 1;
-	}
-	catch(const std::exception& e)
-	{
-		return (cerr << "\033[91mFailed: invalid threshold (not a float).\n", 0);
-	}
+	twf = get_float(*++argv);
 
 	while (*(++argv))
 	{
@@ -30,7 +24,8 @@ int main(int argn, char *argv[], char *envp[])
 		}
 		catch(const std::exception& e)
 		{
-			return (cerr << "\033[91mFailed: invalid file (not a .jpg).\n", 0);
+			cerr << "\033[91mFailed: invalid file (not a .jpg): \"" << *argv << "\".\n";
+			return 0;
 		}
 		CImg<unsigned char> image(*argv);
 

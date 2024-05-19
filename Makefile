@@ -20,7 +20,7 @@ CXXFLAGS	= -Wall -Wextra
 AR			= ar rc
 
 
-HEADER		= libs/CImg.h
+HEADER		= libs/CImg.h libs/utils.h
 
 
 #Colors:

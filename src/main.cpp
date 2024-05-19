@@ -8,5 +8,5 @@ using namespace std;
 
 int main(int argn, char *argv[], char *envp[])
 {
-	return (0);
+	return 0;
 }
