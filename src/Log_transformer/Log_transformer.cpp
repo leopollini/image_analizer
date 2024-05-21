@@ -12,7 +12,6 @@ using namespace cimg_library;
 int main(int argn, char *argv[], char *envp[])
 {
 	float			q;
-	const float		mul = 255 / log(255);
 	
 	if (argn < 2)
 		return (cerr << "\033[91mFailed: not enough args.\n", 0);
@@ -26,7 +25,7 @@ int main(int argn, char *argv[], char *envp[])
 		catch(const std::exception& e)
 		{
 			cerr << "\033[91mFailed: invalid file (not a .jpg): \"" << *argv << "\".\n";
-			return 0;
+			continue;
 		}
 		CImg<float> image(*argv);
 		image.channel(0);
@@ -38,7 +37,7 @@ int main(int argn, char *argv[], char *envp[])
 		}
 		image.normalize(0, 255);
 
-		string path("hm_");
+		string path("lt_");
 		path.append(*argv);
 		image.save(path.c_str());
 	}

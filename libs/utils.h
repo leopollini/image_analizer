@@ -7,7 +7,7 @@ float	get_float(char *s)
 	float	res;
 	try
 	{
-		res = (float)255 * std::stof(s) / 100 - 1;
+		res = std::stof(s);
 	}
 	catch(const std::exception& e)
 	{

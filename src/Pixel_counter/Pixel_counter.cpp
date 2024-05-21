@@ -14,7 +14,7 @@ int main(int argn, char *argv[], char *envp[])
 
 	if (argn < 3)
 		return (cerr << "\033[91mFailed: not enough args.\n", 0);
-	twf = get_float(*++argv);
+	twf = get_float(*++argv) * 255;
 
 	while (*(++argv))
 	{
@@ -25,7 +25,7 @@ int main(int argn, char *argv[], char *envp[])
 		catch(const std::exception& e)
 		{
 			cerr << "\033[91mFailed: invalid file (not a .jpg): \"" << *argv << "\".\n";
-			return 0;
+			continue;
 		}
 		CImg<unsigned char> image(*argv);
 
@@ -33,7 +33,7 @@ int main(int argn, char *argv[], char *envp[])
 		image.channel(0);
 		cimg_forXY(image, x, y)
 		{
-			if ((int)image(x, y) >= twf)
+			if (((int)image(x, y) + 1) * 100 >= twf)
 				count++;
 		}
 		printf("%.1f", (float)count * 100 / (image.height() * image.width()));
