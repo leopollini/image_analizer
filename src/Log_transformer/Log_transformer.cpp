@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <math.h>
+#include <map>
 #define cimg_display 0
 #include "../../libs/CImg.h"
 #include "../../libs/utils.h"
@@ -9,37 +10,43 @@ using namespace std;
 using namespace cimg_library;
 
 
-int main(int argn, char *argv[], char *envp[])
+int main(int argn, char *argv[])
 {
-	float			q;
-	
-	if (argn < 2)
-		return (cerr << "\033[91mFailed: not enough args.\n", 0);
+	map<int, float> logs;
 
+	for (int i = 1; i <= 255; i++)
+		logs[i] = -log((float)i / 255);
+	logs[0] = logs[1];
+	if (argn < 2)
+		cerr << "\033[91mFailed: not enough inputs.\n\033[0m";
 	while (*(++argv))
 	{
+		string	name(*argv);
 		try
 		{
-			CImg<unsigned char> image(*argv);
+			CImg<unsigned char> image(name.c_str());
 		}
 		catch(const std::exception& e)
 		{
-			cerr << "\033[91mFailed: invalid file (not a .jpg): \"" << *argv << "\".\n";
+			cerr << "\033[91mFailed: invalid file (not a .jpg): \"" << name << "\".\n\033[0m";
 			continue;
 		}
-		CImg<float> image(*argv);
+		CImg<float> image(name.c_str());
 		image.channel(0);
 
 		cimg_forXY(image, x, y)
 		{
-			q = image(x, y) ? -log(image(x, y) / 255) : -log((float)1 / 255);
+			float	q = logs[image(x, y)];
 			image(x, y) = q;
 		}
 		image.normalize(0, 255);
 
-		string path("lt_");
-		path.append(*argv);
-		image.save(path.c_str());
+		if (name.find('/') != string::npos)
+			name.insert(name.find('/') + 1, "lt_");
+		else
+			name = "lt_" + name;
+		image.save(name.c_str());
+		cout << name << '\n';
 	}
 	return 0;
 }

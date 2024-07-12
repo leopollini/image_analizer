@@ -7,7 +7,7 @@ API1_FILES	= Pixel_counter
 API2_FILES	= Cropper
 API3_FILES	= Log_transformer
 
-FILES		= main
+FILES		= 
 
 API1		= Pixel_counter
 API2		= Cropper
